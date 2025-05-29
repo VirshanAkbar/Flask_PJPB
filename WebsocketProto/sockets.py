@@ -7,7 +7,7 @@ router = APIRouter()
 # Load lock states from file on startup
 lock_states: Dict[str, int] = lock_storage.load_lock_states()
 
-@router.websocket("/{username}/lock/locking")
+@router.websocket("/ws/{username}/lock/locking")
 async def websocket_endpoint(websocket: WebSocket, username: str):
     await websocket.accept()
     lock_states.setdefault(username, 0)
@@ -32,7 +32,7 @@ async def websocket_endpoint(websocket: WebSocket, username: str):
     except WebSocketDisconnect:
         print(f"Client '{username}' disconnected")
 
-@router.websocket("/{username}/lock/status")
+@router.websocket("/ws/{username}/lock/status")
 async def websocket_status(websocket: WebSocket, username: str):
     await websocket.accept()
     lock_states.setdefault(username, 0)
